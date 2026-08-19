@@ -7,13 +7,14 @@
 - [ ] shadcn/ui init + базовые компоненты
 - [ ] next-themes + переключатель темы
 
-## Шаг 2: База данных и модели (Prisma)
-- [ ] Схема Prisma (User, Account, Session, Post, Comment, Like, Follow)
-- [ ] Первая миграция
-- Ветка в работе: `feature/prisma-setup` (создана, коммитов пока нет)
+## Шаг 2: База данных и модели (Prisma) — done
+- [x] Схема Prisma (User, Account, Session, VerificationToken, Post, Comment, Like, Follow)
+- [x] Первая миграция (`prisma/migrations/20260819154026_init`)
+- PR: [#2](https://github.com/Sidorin7/social-network/pull/2) (смёржен)
+- Заметка: используется Prisma 7, конфигурация БД через `prisma.config.ts` (не через `datasource.url` в schema.prisma)
 
 ## Шаг 3: Авторизация (Auth.js v5)
-- [ ] Не начато
+- [ ] Не начато — следующий шаг
 
 ## Шаг 4: Лента и посты
 - [ ] Не начато
