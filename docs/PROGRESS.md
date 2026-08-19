@@ -13,8 +13,15 @@
 - PR: [#2](https://github.com/Sidorin7/social-network/pull/2) (смёржен)
 - Заметка: используется Prisma 7, конфигурация БД через `prisma.config.ts` (не через `datasource.url` в schema.prisma)
 
-## Шаг 3: Авторизация (Auth.js v5)
-- [ ] Не начато — следующий шаг
+## Шаг 3: Авторизация (Auth.js v5) — in progress
+- [x] `auth.ts`: NextAuth v5 конфиг, PrismaAdapter, JWT sessions
+- [x] Credentials provider (email+пароль, bcrypt) — `authorize()` реализован
+- [x] Route handler `app/api/auth/[...nextauth]/route.ts`
+- [x] `lib/prisma.ts` — синглтон Prisma Client
+- [ ] Формы регистрации/логина + Server Actions
+- [ ] Google OAuth (провайдер зарегистрирован в `auth.ts`, но credentials/UI ещё не настроены)
+- [ ] Middleware для защиты приватных роутов
+- PR: [#4](https://github.com/Sidorin7/social-network/pull/4) (открыт)
 
 ## Шаг 4: Лента и посты
 - [ ] Не начато
