@@ -2,16 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { PostCard, type PostWithAuthor } from "@/components/post-card";
+import { CreatePostCard } from "@/components/create-post-card";
 import { getPosts } from "@/lib/actions/posts";
 
 export function InfiniteFeed({
   initialPosts,
   initialCursor,
   currentUserId,
+  canCreate,
 }: {
   initialPosts: PostWithAuthor[];
   initialCursor: string | null;
   currentUserId?: string;
+  canCreate: boolean;
 }) {
   const [posts, setPosts] = useState(initialPosts);
   const [cursor, setCursor] = useState(initialCursor);
@@ -47,6 +50,10 @@ export function InfiniteFeed({
     setIsLoading(false);
   }
 
+  function handleCreated(post: PostWithAuthor) {
+    setPosts((prev) => [post, ...prev]);
+  }
+
   function handleUpdated(postId: string, content: string) {
     setPosts((prev) => prev.map((p) => (p.id === postId ? { ...p, content } : p)));
   }
@@ -55,14 +62,14 @@ export function InfiniteFeed({
     setPosts((prev) => prev.filter((p) => p.id !== postId));
   }
 
-  if (posts.length === 0) {
-    return (
-      <p className="text-center text-sm text-muted-foreground">Пока нет постов</p>
-    );
-  }
-
   return (
     <div className="flex flex-col gap-8">
+      {canCreate && <CreatePostCard onCreated={handleCreated} />}
+
+      {posts.length === 0 && (
+        <p className="text-center text-sm text-muted-foreground">Пока нет постов</p>
+      )}
+
       {posts.map((post) => (
         <PostCard
           key={post.id}

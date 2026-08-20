@@ -24,10 +24,11 @@ export async function createPost(values: z.infer<typeof createPostSchema>) {
       content: parsed.data.content,
       authorId: session.user.id,
     },
+    include: { author: true },
   });
 
   revalidatePath("/");
-  return { success: true, postId: post.id };
+  return { success: true, post };
 }
 
 export async function getPosts(cursor?: string) {

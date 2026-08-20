@@ -4,17 +4,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { createPost } from "@/lib/actions/posts";
 import { createPostSchema } from "@/lib/validations/posts";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FieldError } from "@/components/ui/field";
+import type { PostWithAuthor } from "@/components/post-card";
 
 type CreatePostValues = z.infer<typeof createPostSchema>;
 
-export function CreatePostCard() {
-  const router = useRouter();
+export function CreatePostCard({
+  onCreated,
+}: {
+  onCreated: (post: PostWithAuthor) => void;
+}) {
   const [serverError, setServerError] = useState<string | null>(null);
   const form = useForm<CreatePostValues>({
     resolver: zodResolver(createPostSchema),
@@ -24,12 +27,12 @@ export function CreatePostCard() {
   async function onSubmit(values: CreatePostValues) {
     setServerError(null);
     const result = await createPost(values);
-    if (!result.success) {
+    if (!result.success || !result.post) {
       setServerError(result.error ?? "Что-то пошло не так");
       return;
     }
     form.reset();
-    router.refresh();
+    onCreated(result.post);
   }
 
   return (
