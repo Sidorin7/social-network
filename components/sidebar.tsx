@@ -47,8 +47,14 @@ export function Sidebar({ session }: { session: Session | null }) {
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          <Button render={<Link href="/login" />}>Войти</Button>
-          <Button variant="outline" render={<Link href="/register" />}>
+          <Button nativeButton={false} render={<Link href="/login" />}>
+            Войти
+          </Button>
+          <Button
+            variant="outline"
+            nativeButton={false}
+            render={<Link href="/register" />}
+          >
             Регистрация
           </Button>
         </div>
