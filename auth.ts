@@ -44,6 +44,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
+    jwt: ({ token, user }) => {
+      // user есть только в момент логина (когда authorize() вернул объект).
+      // Кладём id в токен, чтобы он "пережил" JWT между запросами.
+      if (user) token.id = user.id;
+      return token;
+    },
+    session: ({ session, token }) => {
+      // На каждый запрос токен декодируется — переносим id из токена в session.user
+      session.user.id = token.id as string;
+      return session;
+    },
     authorized: ({ auth, request: { nextUrl } }) => {
       const isLoggedIn = !!auth?.user;
       const isProtected = nextUrl.pathname.startsWith("/dashboard");
