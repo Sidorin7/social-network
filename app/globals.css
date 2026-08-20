@@ -7,9 +7,18 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-sans: var(--font-system-ui);
+  --font-mono: var(--font-jetbrains-mono);
+  --font-heading: var(--font-serif);
+  --font-serif: var(--font-serif);
+  --color-signal-orange: var(--color-signal-orange);
+  --color-ink: var(--color-ink);
+  --color-paper: var(--color-paper);
+  --color-charcoal: var(--color-charcoal);
+  --color-stone: var(--color-stone);
+  --color-ash: var(--color-ash);
+  --color-mist: var(--color-mist);
+  --color-cloud: var(--color-cloud);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,38 +58,54 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  /* Substack style reference — see Design.md */
+  --color-signal-orange: #ff6719;
+  --color-ink: #363737;
+  --color-paper: #ffffff;
+  --color-charcoal: #232525;
+  --color-stone: #777777;
+  --color-ash: #b6b6b6;
+  --color-mist: #c8c8c8;
+  --color-cloud: #eeeeee;
+
+  --font-system-ui:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: Charter, "Iowan Old Style", "Source Serif Pro", Georgia, serif;
+  --font-jetbrains-mono:
+    "Fira Code", "Source Code Pro", Menlo, Consolas, monospace;
+
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --card: var(--color-paper);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-paper);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-signal-orange);
+  --primary-foreground: #ffffff;
+  --secondary: var(--color-cloud);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-cloud);
+  --muted-foreground: var(--color-stone);
+  --accent: var(--color-cloud);
+  --accent-foreground: var(--color-ink);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: var(--color-ash);
+  --input: var(--color-ash);
+  --ring: var(--color-signal-orange);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: var(--color-paper);
+  --sidebar-foreground: var(--color-ink);
+  --sidebar-primary: var(--color-signal-orange);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--color-cloud);
+  --sidebar-accent-foreground: var(--color-ink);
+  --sidebar-border: var(--color-ash);
+  --sidebar-ring: var(--color-signal-orange);
 }
 
 .dark {

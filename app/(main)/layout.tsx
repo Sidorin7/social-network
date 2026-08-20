@@ -1,5 +1,7 @@
 import { auth } from "@/auth";
 import { Sidebar } from "@/components/sidebar";
+import { RightSidebar } from "@/components/right-sidebar";
+import { MobileHeader } from "@/components/mobile-header";
 
 export default async function MainLayout({
   children,
@@ -9,9 +11,13 @@ export default async function MainLayout({
   const session = await auth();
 
   return (
-    <div className="flex min-h-screen">
+    <div className="mx-auto flex min-h-screen w-full max-w-[1440px] flex-col md:flex-row">
+      <MobileHeader session={session} />
       <Sidebar session={session} />
-      <main className="mx-auto w-full max-w-2xl flex-1 p-4">{children}</main>
+      <main className="mx-auto w-full max-w-[720px] flex-1 px-4 py-4 md:px-6 md:py-6">
+        {children}
+      </main>
+      <RightSidebar />
     </div>
   );
 }
