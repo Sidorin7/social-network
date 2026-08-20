@@ -39,7 +39,7 @@ export default async function UserProfilePage({ params }: PageProps) {
       <div>
         <div className="mb-3 flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-cloud text-xl font-medium text-ink">
+            <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-muted text-xl font-medium text-foreground">
               {(user.name ?? user.username).charAt(0).toUpperCase()}
             </div>
             <div>

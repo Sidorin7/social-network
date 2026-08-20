@@ -123,10 +123,10 @@ export function PostCard({
   );
 
   return (
-    <article className="border-b border-cloud pb-6">
+    <article className="border-b border-border pb-6">
       <div className="mb-2 flex items-start justify-between gap-2">
         <Link href={`/users/${post.author.username}`} className="flex items-center gap-2">
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-cloud text-sm font-medium text-ink">
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-medium text-foreground">
             {initial}
           </div>
           <div className="min-w-0">
@@ -168,7 +168,7 @@ export function PostCard({
             rows={3}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            className="bg-paper"
+            className="bg-background"
           />
           {error && <p className="mt-1 text-sm text-destructive">{error}</p>}
           <div className="mt-2 flex gap-2">

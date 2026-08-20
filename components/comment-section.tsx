@@ -90,7 +90,7 @@ export function CommentSection({
 
           return (
             <div key={comment.id} className="flex items-start gap-2">
-              <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-cloud text-xs font-medium text-ink">
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium text-foreground">
                 {initial}
               </div>
               <div className="min-w-0 flex-1">

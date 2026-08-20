@@ -6,6 +6,7 @@ import { Home, User } from "lucide-react";
 import type { Session } from "next-auth";
 import { signOutAction } from "@/lib/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [{ href: "/", label: "Лента", icon: Home }];
@@ -25,12 +26,15 @@ export function Sidebar({
   return (
     <aside className="sticky top-0 hidden h-screen w-56 shrink-0 flex-col justify-between p-4 md:flex lg:w-60">
       <div>
-        <Link
-          href="/"
-          className="mb-6 block font-serif text-2xl font-medium text-foreground"
-        >
-          Social Network
-        </Link>
+        <div className="mb-6 flex items-center justify-between">
+          <Link
+            href="/"
+            className="font-serif text-2xl font-medium text-foreground"
+          >
+            Social Network
+          </Link>
+          <ThemeToggle />
+        </div>
         <nav className="flex flex-col gap-1">
           {navItems.map((item) => (
             <Link

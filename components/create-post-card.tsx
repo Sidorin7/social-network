@@ -36,12 +36,12 @@ export function CreatePostCard({
   }
 
   return (
-    <div className="rounded-xl bg-cloud/60 p-5">
+    <div className="rounded-xl bg-muted/60 p-5">
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
         <Textarea
           placeholder="Что нового?"
           rows={3}
-          className="bg-paper"
+          className="bg-background"
           {...form.register("content")}
         />
         {form.formState.errors.content && (

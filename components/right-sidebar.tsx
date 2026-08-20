@@ -9,11 +9,11 @@ export function RightSidebar() {
           type="search"
           placeholder="Поиск по Social Network"
           disabled
-          className="w-full rounded-full border border-border bg-paper py-2 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-70"
+          className="w-full rounded-full border border-border bg-background py-2 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-70"
         />
       </div>
 
-      <div className="rounded-xl bg-paper p-5">
+      <div className="rounded-xl bg-card p-5">
         <h2 className="mb-1 font-serif text-xl font-medium text-foreground">
           Рекомендации
         </h2>

@@ -4,7 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 
 export function GuestCtaCard() {
   return (
-    <Card className="bg-cloud/60">
+    <Card className="bg-muted/60">
       <CardHeader>
         <CardTitle>Присоединяйтесь к обсуждению</CardTitle>
         <p className="text-sm text-muted-foreground">
