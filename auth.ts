@@ -38,6 +38,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.name,
+          username: user.username,
           image: user.image,
         };
       },
@@ -46,13 +47,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     jwt: ({ token, user }) => {
       // user есть только в момент логина (когда authorize() вернул объект).
-      // Кладём id в токен, чтобы он "пережил" JWT между запросами.
-      if (user) token.id = user.id;
+      // Кладём id/username в токен, чтобы они "пережили" JWT между запросами
+      // без похода в БД на каждый запрос (см. (main)/layout.tsx).
+      if (user) {
+        token.id = user.id;
+        if (user.username) token.username = user.username;
+      }
       return token;
     },
     session: ({ session, token }) => {
-      // На каждый запрос токен декодируется — переносим id из токена в session.user
+      // На каждый запрос токен декодируется — переносим данные из токена в session.user
       session.user.id = token.id as string;
+      session.user.username = token.username as string;
       return session;
     },
     authorized: ({ auth, request: { nextUrl } }) => {

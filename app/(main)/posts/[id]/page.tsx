@@ -15,16 +15,19 @@ export default async function PostPage({ params }: PageProps) {
   const { id } = await params;
   const session = await auth();
 
-  const post = await prisma.post.findUnique({
-    where: { id },
-    include: postInclude(session?.user?.id),
-  });
+  // Пост и комментарии независимы друг от друга — грузим параллельно,
+  // а не один за другим (каждый round-trip до БД стоит ~200-250ms).
+  const [post, comments] = await Promise.all([
+    prisma.post.findUnique({
+      where: { id },
+      include: postInclude(session?.user?.id),
+    }),
+    getComments(id),
+  ]);
 
   if (!post) {
     notFound();
   }
-
-  const comments = await getComments(id);
 
   return (
     <div className="mx-auto max-w-2xl p-4">
