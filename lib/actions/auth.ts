@@ -3,6 +3,7 @@
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { signOut } from "@/auth";
 
 const registerSchema = z.object({
   name: z.string().min(2),
@@ -26,4 +27,8 @@ export async function registerUser(values: z.infer<typeof registerSchema>) {
   const hashedPassword = await bcrypt.hash(password, 10);
   await prisma.user.create({ data: { name, email, hashedPassword } });
   return { success: true };
+}
+
+export async function signOutAction() {
+  await signOut({ redirectTo: "/" });
 }
