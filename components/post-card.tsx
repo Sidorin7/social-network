@@ -1,9 +1,21 @@
-import Link from "next/link";
 import { Post, User } from "@prisma/client";
+import { PostBody } from "@/components/post-body";
 
 export type PostWithAuthor = Post & { author: Pick<User, "name"> };
 
-export function PostCard({ post }: { post: PostWithAuthor }) {
+export function PostCard({
+  post,
+  currentUserId,
+  linkToPost = true,
+  onUpdated,
+  onDeleted,
+}: {
+  post: PostWithAuthor;
+  currentUserId?: string;
+  linkToPost?: boolean;
+  onUpdated?: (content: string) => void;
+  onDeleted?: () => void;
+}) {
   const authorName = post.author.name ?? "Неизвестный автор";
   const initial = authorName.charAt(0).toUpperCase();
 
@@ -23,11 +35,14 @@ export function PostCard({ post }: { post: PostWithAuthor }) {
         </div>
       </div>
 
-      <Link href={`/posts/${post.id}`}>
-        <p className="whitespace-pre-wrap font-serif text-[19px] leading-[1.2] text-foreground">
-          {post.content}
-        </p>
-      </Link>
+      <PostBody
+        postId={post.id}
+        content={post.content}
+        isOwner={currentUserId === post.authorId}
+        linkToPost={linkToPost}
+        onUpdated={onUpdated}
+        onDeleted={onDeleted}
+      />
     </article>
   );
 }
