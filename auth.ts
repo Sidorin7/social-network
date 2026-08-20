@@ -8,6 +8,9 @@ import bcrypt from "bcryptjs";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
+  pages: {
+    signIn: "/login",
+  },
   providers: [
     Google,
     Credentials({
@@ -40,4 +43,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    authorized: ({ auth, request: { nextUrl } }) => {
+      const isLoggedIn = !!auth?.user;
+      const isProtected = nextUrl.pathname.startsWith("/dashboard");
+      if (isProtected && !isLoggedIn) return false; // редиректнёт на страницу логина
+      return true;
+    },
+  },
 });
