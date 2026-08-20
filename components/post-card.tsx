@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Heart, MessageCircle, MoreVertical, Repeat2, Eye } from "lucide-react";
 import { updatePost, deletePost } from "@/lib/actions/posts";
 import { toggleLike } from "@/lib/actions/likes";
@@ -59,7 +60,6 @@ export function PostCard({
   const [draft, setDraft] = useState(post.content);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const [liked, setLiked] = useState(post.likes.length > 0);
   const [likeCount, setLikeCount] = useState(post._count.likes);
@@ -84,16 +84,16 @@ export function PostCard({
     if (!result.success) {
       setLiked(!nextLiked);
       setLikeCount((count) => count + (nextLiked ? -1 : 1));
+      toast.error(result.error ?? "Не удалось поставить лайк");
     }
   }
 
   async function handleSave() {
-    setError(null);
     setIsSaving(true);
     const result = await updatePost(post.id, { content: draft });
     setIsSaving(false);
     if (!result.success) {
-      setError(result.error ?? "Что-то пошло не так");
+      toast.error(result.error ?? "Не удалось сохранить пост");
       return;
     }
     setIsEditing(false);
@@ -106,9 +106,10 @@ export function PostCard({
     const result = await deletePost(post.id);
     setIsDeleting(false);
     if (!result.success) {
-      setError(result.error ?? "Что-то пошло не так");
+      toast.error(result.error ?? "Не удалось удалить пост");
       return;
     }
+    toast.success("Пост удалён");
     if (onDeleted) {
       onDeleted();
     } else {
@@ -170,7 +171,6 @@ export function PostCard({
             onChange={(e) => setDraft(e.target.value)}
             className="bg-background"
           />
-          {error && <p className="mt-1 text-sm text-destructive">{error}</p>}
           <div className="mt-2 flex gap-2">
             <Button size="sm" type="button" disabled={isSaving} onClick={handleSave}>
               {isSaving ? "Сохраняем..." : "Сохранить"}
@@ -183,18 +183,16 @@ export function PostCard({
               onClick={() => {
                 setDraft(post.content);
                 setIsEditing(false);
-                setError(null);
               }}
             >
               Отмена
             </Button>
           </div>
         </div>
+      ) : linkToPost ? (
+        <Link href={`/posts/${post.id}`}>{text}</Link>
       ) : (
-        <>
-          {linkToPost ? <Link href={`/posts/${post.id}`}>{text}</Link> : text}
-          {error && <p className="mt-1 text-sm text-destructive">{error}</p>}
-        </>
+        text
       )}
 
       <div className="mt-3 flex items-center justify-between">

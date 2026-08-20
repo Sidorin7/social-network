@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { toast } from "sonner";
 import { createPost } from "@/lib/actions/posts";
 import { createPostSchema } from "@/lib/validations/posts";
 import { Button } from "@/components/ui/button";
@@ -18,17 +18,15 @@ export function CreatePostCard({
 }: {
   onCreated: (post: PostWithAuthor) => void;
 }) {
-  const [serverError, setServerError] = useState<string | null>(null);
   const form = useForm<CreatePostValues>({
     resolver: zodResolver(createPostSchema),
     defaultValues: { content: "" },
   });
 
   async function onSubmit(values: CreatePostValues) {
-    setServerError(null);
     const result = await createPost(values);
     if (!result.success || !result.post) {
-      setServerError(result.error ?? "Что-то пошло не так");
+      toast.error(result.error ?? "Не удалось опубликовать пост");
       return;
     }
     form.reset();
@@ -47,7 +45,6 @@ export function CreatePostCard({
         {form.formState.errors.content && (
           <FieldError errors={[form.formState.errors.content]} />
         )}
-        {serverError && <p className="text-sm text-destructive">{serverError}</p>}
 
         <Button
           type="submit"

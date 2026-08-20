@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { toggleFollow } from "@/lib/actions/follows";
 import { Button } from "@/components/ui/button";
 
@@ -40,6 +41,7 @@ export function FollowButton({
     if (!result.success) {
       setFollowing(!nextFollowing);
       onToggle?.(!nextFollowing);
+      toast.error(result.error ?? "Не удалось изменить подписку");
     }
   }
 

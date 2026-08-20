@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 import type { getComments } from "@/lib/actions/comments";
 import { createComment, deleteComment } from "@/lib/actions/comments";
@@ -25,17 +26,15 @@ export function CommentSection({
   currentUserId?: string;
 }) {
   const [comments, setComments] = useState(initialComments);
-  const [serverError, setServerError] = useState<string | null>(null);
   const form = useForm<CreateCommentValues>({
     resolver: zodResolver(createCommentSchema),
     defaultValues: { content: "" },
   });
 
   async function onSubmit(values: CreateCommentValues) {
-    setServerError(null);
     const result = await createComment(postId, values);
     if (!result.success) {
-      setServerError(result.error ?? "Что-то пошло не так");
+      toast.error(result.error ?? "Не удалось отправить комментарий");
       return;
     }
     form.reset();
@@ -45,7 +44,10 @@ export function CommentSection({
   async function handleDelete(commentId: string) {
     if (!window.confirm("Удалить комментарий?")) return;
     const result = await deleteComment(commentId);
-    if (!result.success) return;
+    if (!result.success) {
+      toast.error(result.error ?? "Не удалось удалить комментарий");
+      return;
+    }
     setComments((prev) => prev.filter((c) => c.id !== commentId));
   }
 
@@ -67,9 +69,6 @@ export function CommentSection({
           />
           {form.formState.errors.content && (
             <FieldError errors={[form.formState.errors.content]} />
-          )}
-          {serverError && (
-            <p className="text-sm text-destructive">{serverError}</p>
           )}
           <Button
             type="submit"
