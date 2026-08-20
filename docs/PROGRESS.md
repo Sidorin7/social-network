@@ -4,7 +4,7 @@
 
 ## Шаг 1: Инициализация проекта
 - [x] `create-next-app` (TypeScript, App Router, Tailwind, ESLint)
-- [ ] shadcn/ui init + базовые компоненты
+- [x] shadcn/ui init + базовые компоненты (Button, Card, Input, Textarea, Label, Field, Separator)
 - [ ] next-themes + переключатель темы
 
 ## Шаг 2: База данных и модели (Prisma) — done
@@ -13,24 +13,33 @@
 - PR: [#2](https://github.com/Sidorin7/social-network/pull/2) (смёржен)
 - Заметка: используется Prisma 7, конфигурация БД через `prisma.config.ts` (не через `datasource.url` в schema.prisma)
 
-## Шаг 3: Авторизация (Auth.js v5) — in progress
+## Шаг 3: Авторизация (Auth.js v5) — done
 - [x] `auth.ts`: NextAuth v5 конфиг, PrismaAdapter, JWT sessions
 - [x] Credentials provider (email+пароль, bcrypt) — `authorize()` реализован
 - [x] Route handler `app/api/auth/[...nextauth]/route.ts`
 - [x] `lib/prisma.ts` — синглтон Prisma Client
-- [ ] Формы регистрации/логина + Server Actions
+- [x] Формы регистрации/логина + Server Actions (`app/(auth)/login`, `app/(auth)/register`)
+- [x] Middleware для защиты приватных роутов (`proxy.ts`, матчит `/dashboard`, `/posts/new`, `/posts/:id/edit`)
 - [ ] Google OAuth (провайдер зарегистрирован в `auth.ts`, но credentials/UI ещё не настроены)
-- [ ] Middleware для защиты приватных роутов
-- PR: [#4](https://github.com/Sidorin7/social-network/pull/4) (открыт)
 
-## Шаг 4: Лента и посты
-- [ ] Не начато
+## Шаг 4: Лента и посты — in progress
+- [x] Главная лента `/` (Server Component, посты по автору + дате)
+- [x] Создание поста: быстрая форма в ленте (`CreatePostCard`) и полная страница `/posts/new`
+- [x] Страница поста `/posts/[id]`
+- [x] Пост — микроблог-сообщение без заголовка (поле `title` убрано из схемы, миграция `20260820121945_remove_post_title`)
+- [ ] Редактирование поста
+- [ ] Удаление поста (только автор)
+- [ ] Пагинация ленты
 
 ## Шаг 5: Социальные механики
-- [ ] Не начато
+- [ ] Не начато (в UI уже заложены точки роста: правая колонка под рекомендации, место под Subscribe-ссылку в карточке поста)
 
-## Шаг 6: Дизайн и полировка
-- [ ] Не начато
+## Шаг 6: Дизайн и полировка — in progress
+- [x] Применена дизайн-система Substack (`Design.md`): токены цвета/шрифтов, pill-кнопки, плоская лента с hairline-разделителями
+- [x] Трёхколоночный адаптивный layout (сайдбар / лента / рекомендации), мобильный header ниже `md`
+- [ ] Тёмная тема
+- [ ] Скелетоны/лоадеры (Suspense + `loading.tsx`)
+- [ ] Тосты для уведомлений
 
 ## Git-инфраструктура
 - [x] Репозиторий создан, remote `origin` подключён (`Sidorin7/social-network`)
