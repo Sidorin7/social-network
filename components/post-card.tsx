@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Post, User } from "@prisma/client";
 import { Heart, MessageCircle, MoreVertical, Repeat2, Eye } from "lucide-react";
 import { updatePost, deletePost } from "@/lib/actions/posts";
+import { toggleLike } from "@/lib/actions/likes";
 import { formatRelativeTime } from "@/lib/format-relative-time";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -16,7 +17,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export type PostWithAuthor = Post & { author: Pick<User, "name"> };
+import type { PostWithAuthor } from "@/lib/posts";
+
+export type { PostWithAuthor };
 
 function usePostTimeLabel(date: Date) {
   // Начальное значение не зависит от "текущего момента", поэтому совпадает
@@ -57,6 +60,32 @@ export function PostCard({
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [liked, setLiked] = useState(post.likes.length > 0);
+  const [likeCount, setLikeCount] = useState(post._count.likes);
+  const [isTogglingLike, setIsTogglingLike] = useState(false);
+
+  async function handleToggleLike() {
+    if (!currentUserId) {
+      router.push("/login");
+      return;
+    }
+    if (isTogglingLike) return;
+
+    // Optimistic update: сразу меняем UI, откатываем, если сервер откажет.
+    const nextLiked = !liked;
+    setLiked(nextLiked);
+    setLikeCount((count) => count + (nextLiked ? 1 : -1));
+    setIsTogglingLike(true);
+
+    const result = await toggleLike(post.id);
+    setIsTogglingLike(false);
+
+    if (!result.success) {
+      setLiked(!nextLiked);
+      setLikeCount((count) => count + (nextLiked ? -1 : 1));
+    }
+  }
 
   async function handleSave() {
     setError(null);
@@ -170,10 +199,20 @@ export function PostCard({
 
       <div className="mt-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Heart className="size-5" strokeWidth={2} />
-            0
-          </span>
+          <button
+            type="button"
+            disabled={isTogglingLike}
+            onClick={handleToggleLike}
+            className={cn(
+              "flex items-center gap-1.5 text-xs transition-colors",
+              liked
+                ? "text-signal-orange"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Heart className="size-5" strokeWidth={2} fill={liked ? "currentColor" : "none"} />
+            {likeCount}
+          </button>
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <MessageCircle className="size-5" strokeWidth={2} />
             0

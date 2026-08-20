@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { postInclude } from "@/lib/posts";
 import { PostCard } from "@/components/post-card";
 
 type PageProps = {
@@ -14,7 +15,7 @@ export default async function PostPage({ params }: PageProps) {
 
   const post = await prisma.post.findUnique({
     where: { id },
-    include: { author: { select: { name: true } } },
+    include: postInclude(session?.user?.id),
   });
 
   if (!post) {

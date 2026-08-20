@@ -5,7 +5,7 @@ import { InfiniteFeed } from "@/components/infinite-feed";
 
 export default async function FeedPage() {
   const session = await auth();
-  const { posts, nextCursor } = await getPosts();
+  const { posts, nextCursor } = await getPosts(undefined, session?.user?.id);
 
   return (
     <div className="flex flex-col gap-8">

@@ -44,7 +44,7 @@ export function InfiniteFeed({
 
   async function loadMore() {
     setIsLoading(true);
-    const result = await getPosts(cursorRef.current ?? undefined);
+    const result = await getPosts(cursorRef.current ?? undefined, currentUserId);
     setPosts((prev) => [...prev, ...result.posts]);
     setCursor(result.nextCursor);
     setIsLoading(false);

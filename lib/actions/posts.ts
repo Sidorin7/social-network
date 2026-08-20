@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { createPostSchema } from "@/lib/validations/posts";
+import { postInclude } from "@/lib/posts";
 
 const POSTS_PAGE_SIZE = 10;
 
@@ -24,19 +25,19 @@ export async function createPost(values: z.infer<typeof createPostSchema>) {
       content: parsed.data.content,
       authorId: session.user.id,
     },
-    include: { author: { select: { name: true } } },
+    include: postInclude(session.user.id),
   });
 
   revalidatePath("/");
   return { success: true, post };
 }
 
-export async function getPosts(cursor?: string) {
+export async function getPosts(cursor?: string, currentUserId?: string) {
   const posts = await prisma.post.findMany({
     take: POSTS_PAGE_SIZE,
     ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
     orderBy: { createdAt: "desc" },
-    include: { author: { select: { name: true } } },
+    include: postInclude(currentUserId),
   });
 
   return {
