@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home } from "lucide-react";
+import { Home, User } from "lucide-react";
 import type { Session } from "next-auth";
 import { signOutAction } from "@/lib/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -10,8 +10,17 @@ import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [{ href: "/", label: "Лента", icon: Home }];
 
-export function Sidebar({ session }: { session: Session | null }) {
+export function Sidebar({
+  session,
+  username,
+}: {
+  session: Session | null;
+  username?: string;
+}) {
   const pathname = usePathname();
+  const navItems = username
+    ? [...NAV_ITEMS, { href: `/users/${username}`, label: "Профиль", icon: User }]
+    : NAV_ITEMS;
 
   return (
     <aside className="sticky top-0 hidden h-screen w-56 shrink-0 flex-col justify-between p-4 md:flex lg:w-60">
@@ -23,7 +32,7 @@ export function Sidebar({ session }: { session: Session | null }) {
           Social Network
         </Link>
         <nav className="flex flex-col gap-1">
-          {NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}

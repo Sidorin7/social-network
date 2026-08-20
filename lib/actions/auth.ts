@@ -4,6 +4,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { signOut } from "@/auth";
+import { generateUniqueUsername } from "@/lib/username";
 
 const registerSchema = z.object({
   name: z.string().min(2),
@@ -25,7 +26,8 @@ export async function registerUser(values: z.infer<typeof registerSchema>) {
   const { name, email, password } = parsed.data;
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  await prisma.user.create({ data: { name, email, hashedPassword } });
+  const username = await generateUniqueUsername(email);
+  await prisma.user.create({ data: { name, email, hashedPassword, username } });
   return { success: true };
 }
 

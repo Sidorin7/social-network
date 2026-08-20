@@ -125,17 +125,17 @@ export function PostCard({
   return (
     <article className="border-b border-cloud pb-6">
       <div className="mb-2 flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2">
+        <Link href={`/users/${post.author.username}`} className="flex items-center gap-2">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-cloud text-sm font-medium text-ink">
             {initial}
           </div>
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-foreground">
+            <p className="truncate text-sm font-semibold text-foreground hover:underline">
               {authorName}
             </p>
             <p className="text-xs text-muted-foreground">{timeLabel}</p>
           </div>
-        </div>
+        </Link>
 
         {isOwner && (
           <DropdownMenu>

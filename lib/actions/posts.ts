@@ -32,10 +32,11 @@ export async function createPost(values: z.infer<typeof createPostSchema>) {
   return { success: true, post };
 }
 
-export async function getPosts(cursor?: string, currentUserId?: string) {
+export async function getPosts(cursor?: string, currentUserId?: string, authorId?: string) {
   const posts = await prisma.post.findMany({
     take: POSTS_PAGE_SIZE,
     ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
+    ...(authorId ? { where: { authorId } } : {}),
     orderBy: { createdAt: "desc" },
     include: postInclude(currentUserId),
   });

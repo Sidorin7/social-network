@@ -10,11 +10,15 @@ export function InfiniteFeed({
   initialCursor,
   currentUserId,
   canCreate,
+  authorId,
+  emptyMessage = "Пока нет постов",
 }: {
   initialPosts: PostWithAuthor[];
   initialCursor: string | null;
   currentUserId?: string;
   canCreate: boolean;
+  authorId?: string;
+  emptyMessage?: string;
 }) {
   const [posts, setPosts] = useState(initialPosts);
   const [cursor, setCursor] = useState(initialCursor);
@@ -44,7 +48,7 @@ export function InfiniteFeed({
 
   async function loadMore() {
     setIsLoading(true);
-    const result = await getPosts(cursorRef.current ?? undefined, currentUserId);
+    const result = await getPosts(cursorRef.current ?? undefined, currentUserId, authorId);
     setPosts((prev) => [...prev, ...result.posts]);
     setCursor(result.nextCursor);
     setIsLoading(false);
@@ -67,7 +71,7 @@ export function InfiniteFeed({
       {canCreate && <CreatePostCard onCreated={handleCreated} />}
 
       {posts.length === 0 && (
-        <p className="text-center text-sm text-muted-foreground">Пока нет постов</p>
+        <p className="text-center text-sm text-muted-foreground">{emptyMessage}</p>
       )}
 
       {posts.map((post) => (
