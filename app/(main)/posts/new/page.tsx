@@ -8,14 +8,8 @@ import { useRouter } from "next/navigation";
 import { createPost } from "@/lib/actions/posts";
 import { createPostSchema } from "@/lib/validations/posts";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-  FieldError,
-} from "@/components/ui/field";
+import { FieldError } from "@/components/ui/field";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type CreatePostValues = z.infer<typeof createPostSchema>;
@@ -25,7 +19,7 @@ export default function NewPostPage() {
   const [serverError, setServerError] = useState<string | null>(null);
   const form = useForm<CreatePostValues>({
     resolver: zodResolver(createPostSchema),
-    defaultValues: { title: "", content: "" },
+    defaultValues: { content: "" },
   });
 
   async function onSubmit(values: CreatePostValues) {
@@ -45,32 +39,23 @@ export default function NewPostPage() {
           <CardTitle>Новый пост</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FieldGroup>
-              <Field data-invalid={!!form.formState.errors.title}>
-                <FieldLabel htmlFor="title">Заголовок</FieldLabel>
-                <Input id="title" {...form.register("title")} />
-                {form.formState.errors.title && (
-                  <FieldError errors={[form.formState.errors.title]} />
-                )}
-              </Field>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
+            <Textarea
+              placeholder="Что нового?"
+              rows={8}
+              {...form.register("content")}
+            />
+            {form.formState.errors.content && (
+              <FieldError errors={[form.formState.errors.content]} />
+            )}
 
-              <Field data-invalid={!!form.formState.errors.content}>
-                <FieldLabel htmlFor="content">Текст</FieldLabel>
-                <Textarea id="content" rows={8} {...form.register("content")} />
-                {form.formState.errors.content && (
-                  <FieldError errors={[form.formState.errors.content]} />
-                )}
-              </Field>
+            {serverError && (
+              <p className="text-sm text-destructive">{serverError}</p>
+            )}
 
-              {serverError && (
-                <p className="text-sm text-destructive">{serverError}</p>
-              )}
-
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Публикуем..." : "Опубликовать"}
-              </Button>
-            </FieldGroup>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting ? "Публикуем..." : "Опубликовать"}
+            </Button>
           </form>
         </CardContent>
       </Card>

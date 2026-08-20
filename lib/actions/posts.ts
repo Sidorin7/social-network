@@ -18,7 +18,6 @@ export async function createPost(values: z.infer<typeof createPostSchema>) {
 
   const post = await prisma.post.create({
     data: {
-      title: parsed.data.title,
       content: parsed.data.content,
       authorId: session.user.id,
     },
