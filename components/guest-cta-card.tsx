@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 export function GuestCtaCard() {
   return (
@@ -12,16 +12,12 @@ export function GuestCtaCard() {
         </p>
       </CardHeader>
       <CardContent className="flex gap-2">
-        <Button nativeButton={false} render={<Link href="/login" />}>
+        <Link href="/login" className={buttonVariants()}>
           Войти
-        </Button>
-        <Button
-          variant="outline"
-          nativeButton={false}
-          render={<Link href="/register" />}
-        >
+        </Link>
+        <Link href="/register" className={buttonVariants({ variant: "outline" })}>
           Регистрация
-        </Button>
+        </Link>
       </CardContent>
     </Card>
   );

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
 import { signOutAction } from "@/lib/actions/auth";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [{ href: "/", label: "Лента" }];
@@ -47,16 +47,12 @@ export function Sidebar({ session }: { session: Session | null }) {
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          <Button nativeButton={false} render={<Link href="/login" />}>
+          <Link href="/login" className={buttonVariants()}>
             Войти
-          </Button>
-          <Button
-            variant="outline"
-            nativeButton={false}
-            render={<Link href="/register" />}
-          >
+          </Link>
+          <Link href="/register" className={buttonVariants({ variant: "outline" })}>
             Регистрация
-          </Button>
+          </Link>
         </div>
       )}
     </aside>
