@@ -35,7 +35,7 @@
 
 ## Шаг 5: Социальные механики — in progress
 - [x] Лайки — `toggleLike` server action (`lib/actions/likes.ts`) поверх уникальной пары `Like.userId_postId`; счётчик и «лайкнул ли я» подтягиваются через общий `postInclude()` (`lib/posts.ts`), кнопка в `PostCard` с optimistic UI (мгновенно меняется, откатывается при ошибке сервера)
-- [ ] Комментарии
+- [x] Комментарии — `lib/actions/comments.ts` (`getComments`/`createComment`/`deleteComment`, удаление только автору), `CommentSection` на странице поста: форма + список, счётчик в `PostCard` теперь реальный (`_count.comments`), клик по иконке комментариев в ленте ведёт на страницу поста
 - [ ] Подписки (Follow/unfollow) + профиль пользователя `/users/[username]`
 - Репосты и просмотры остаются визуальной заглушкой — этих моделей нет в схеме
 
