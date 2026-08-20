@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { postInclude } from "@/lib/posts";
+import { getComments } from "@/lib/actions/comments";
 import { PostCard } from "@/components/post-card";
+import { CommentSection } from "@/components/comment-section";
 
 type PageProps = {
   // В Next.js 15+ params — это Promise, его нужно await-нуть
@@ -22,9 +24,16 @@ export default async function PostPage({ params }: PageProps) {
     notFound();
   }
 
+  const comments = await getComments(id);
+
   return (
     <div className="mx-auto max-w-2xl p-4">
       <PostCard post={post} currentUserId={session?.user?.id} linkToPost={false} />
+      <CommentSection
+        postId={id}
+        initialComments={comments}
+        currentUserId={session?.user?.id}
+      />
     </div>
   );
 }

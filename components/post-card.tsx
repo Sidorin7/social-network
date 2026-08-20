@@ -213,10 +213,13 @@ export function PostCard({
             <Heart className="size-5" strokeWidth={2} fill={liked ? "currentColor" : "none"} />
             {likeCount}
           </button>
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Link
+            href={`/posts/${post.id}`}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+          >
             <MessageCircle className="size-5" strokeWidth={2} />
-            0
-          </span>
+            {post._count.comments}
+          </Link>
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Repeat2 className="size-5" strokeWidth={2} />
             0

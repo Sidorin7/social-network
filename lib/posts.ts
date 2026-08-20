@@ -9,7 +9,7 @@ import { Prisma } from "@prisma/client";
 export function postInclude(currentUserId?: string) {
   return {
     author: { select: { name: true } },
-    _count: { select: { likes: true } },
+    _count: { select: { likes: true, comments: true } },
     likes: {
       where: { userId: currentUserId ?? "__none__" },
       select: { id: true },
