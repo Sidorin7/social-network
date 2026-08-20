@@ -33,10 +33,12 @@
 - Баг: новый пост не появлялся в ленте после публикации (`InfiniteFeed` не подхватывал обновлённый `initialPosts` после `router.refresh()`) — исправлено, `createPost` теперь возвращает созданный пост и `CreatePostCard` добавляет его в локальный стейт напрямую
 - Security-фикс: `createPost`/`getPosts` и страница поста тянули весь объект `User` (включая `hashedPassword`) в ответ клиенту через `include: { author: true }` — сужено до `select: { name: true }`
 
-## Шаг 5: Социальные механики — in progress
+## Шаг 5: Социальные механики — done
 - [x] Лайки — `toggleLike` server action (`lib/actions/likes.ts`) поверх уникальной пары `Like.userId_postId`; счётчик и «лайкнул ли я» подтягиваются через общий `postInclude()` (`lib/posts.ts`), кнопка в `PostCard` с optimistic UI (мгновенно меняется, откатывается при ошибке сервера)
 - [x] Комментарии — `lib/actions/comments.ts` (`getComments`/`createComment`/`deleteComment`, удаление только автору), `CommentSection` на странице поста: форма + список, счётчик в `PostCard` теперь реальный (`_count.comments`), клик по иконке комментариев в ленте ведёт на страницу поста
-- [ ] Подписки (Follow/unfollow) + профиль пользователя `/users/[username]`
+- [x] Подписки + профиль — `toggleFollow` (`lib/actions/follows.ts`) поверх `Follow.followerId_followingId`, `FollowButton` с optimistic UI; страница `/users/[username]` (посты автора через переиспользованный `InfiniteFeed` с фильтром `authorId`, счётчики постов/подписчиков/подписок); имя автора в `PostCard` теперь ссылка на профиль; в сайдбаре появился пункт «Профиль»
+- Добавлено поле `User.username` (обязательное, уникальное) — миграция `20260820210155_add_user_username` с backfill из локальной части email для уже существующих пользователей; при регистрации генерируется той же логикой (`lib/username.ts`)
+- Известное ограничение: username генерируется только в Credentials-регистрации; если включить Google OAuth (сейчас не настроен), `PrismaAdapter` создаст пользователя без username и упадёт на NOT NULL — нужно будет доработать при подключении OAuth
 - Репосты и просмотры остаются визуальной заглушкой — этих моделей нет в схеме
 
 ## Шаг 6: Дизайн и полировка — in progress
