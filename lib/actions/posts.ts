@@ -24,7 +24,7 @@ export async function createPost(values: z.infer<typeof createPostSchema>) {
       content: parsed.data.content,
       authorId: session.user.id,
     },
-    include: { author: true },
+    include: { author: { select: { name: true } } },
   });
 
   revalidatePath("/");
@@ -36,7 +36,7 @@ export async function getPosts(cursor?: string) {
     take: POSTS_PAGE_SIZE,
     ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
     orderBy: { createdAt: "desc" },
-    include: { author: true },
+    include: { author: { select: { name: true } } },
   });
 
   return {
